@@ -54,3 +54,31 @@ class CouponRecordService():
             "message": "Coupon claimed successfully"
         })
         return self.response
+
+    async def use_coupon(self, record_id):
+        raw_record = await self.record.get_record_by_id(record_id)
+        if not raw_record:
+            self.response.update({
+                "success": False,
+                "code": "USE_FAILED",
+                "message": "No record found"
+            })
+            return self.response
+
+        if raw_record.coupon.expires_at < datetime.now():
+            self.response.update({
+                "success": False,
+                "code": "USE_FAILED",
+                "message": "Coupon expired"
+            })
+            return self.response
+
+        await self.record.update_used_at(record_id)
+        await self.db.commit()
+
+        self.response.update({
+            "success": True,
+            "code": "USE_SUCCESS",
+            "message": "Coupon used successfully"
+        })
+        return self.response

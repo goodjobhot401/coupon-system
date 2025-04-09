@@ -15,6 +15,14 @@ async def get_coupons(db: AsyncSession = Depends(get_mysql_session)):
     return await service.get_coupons()
 
 
+@router.post("/use/{record_id}")
+async def use_coupon(
+        record_id,
+        db: AsyncSession = Depends(get_mysql_session)):
+    service = CouponRecordService(db=db)
+    return await service.use_coupon(record_id)
+
+
 @router.post("/{coupon_id}")
 async def claim_coupon(
         coupon_id,

@@ -1,5 +1,6 @@
+from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import selectinload
 from models.coupon_record import CouponRecord
 
@@ -33,3 +34,11 @@ class CouponRecordRepository:
         )
         self.db.add(record)
         return record
+
+    async def update_used_at(self, record_id: int):
+        result = await self.db.execute(
+            update(CouponRecord)
+            .where(CouponRecord.id == record_id)
+            .values(used_at=datetime.now())
+        )
+        return result
