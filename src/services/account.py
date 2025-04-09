@@ -42,3 +42,9 @@ class AccountService():
         account.pop("created_at")
         account.pop("updated_at")
         return account
+
+    async def create_account(self, name):
+        account = await self.account.create_account(name)
+        await self.db.commit()
+        await self.db.refresh(account)
+        return account
