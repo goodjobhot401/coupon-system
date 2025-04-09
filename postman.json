@@ -1,0 +1,179 @@
+{
+    "info": {
+      "name": "Coupon-System",
+      "_postman_id": "auto-generated-id",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Get Account Detail",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "{{base_url}}/account/1",
+            "host": [
+              "{{base_url}}"
+            ],
+            "path": [
+              "account",
+              "1"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Create Account",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "{{base_url}}/account/create",
+            "host": [
+              "{{base_url}}"
+            ],
+            "path": [
+              "account",
+              "create"
+            ]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"test_user_4\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        }
+      },
+      {
+        "name": "Get Coupons",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "{{base_url}}/coupon/all",
+            "host": [
+              "{{base_url}}"
+            ],
+            "path": [
+              "coupon",
+              "all"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Use Coupon",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "{{base_url}}/coupon/use/{{record_id}}",
+            "host": [
+              "{{base_url}}"
+            ],
+            "path": [
+              "coupon",
+              "use",
+              "{{record_id}}"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Update Cache",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "{{base_url}}/coupon/cache/{{coupon_id}}",
+            "host": [
+              "{{base_url}}"
+            ],
+            "path": [
+              "coupon",
+              "cache",
+              "{{coupon_id}}"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Claim Coupon",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "{{base_url}}/coupon/{{coupon_id}}",
+            "host": [
+              "{{base_url}}"
+            ],
+            "path": [
+              "coupon",
+              "{{coupon_id}}"
+            ]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"account_id\": 1\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "variable": [
+      {
+        "key": "base_url",
+        "value": "http://localhost:8000"
+      },
+      {
+        "key": "account_id",
+        "value": "1"
+      },
+      {
+        "key": "coupon_id",
+        "value": "1"
+      },
+      {
+        "key": "record_id",
+        "value": "1"
+      }
+    ]
+  }
