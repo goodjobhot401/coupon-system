@@ -3,6 +3,7 @@ from infra.session import engine
 from models.base import Base
 from models.account import Account
 from models.coupon import Coupon
+from models.coupon_record import CouponRecord
 
 
 async def bootstrap():

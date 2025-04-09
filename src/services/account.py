@@ -1,12 +1,14 @@
 from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from repositories.account import AccountRepository
+from repositories.coupon_record import CouponRecordRepository
 
 
 class AccountService():
     def __init__(self, db: AsyncSession):
         self.db = db
         self.account = AccountRepository(db)
+        self.record = CouponRecordRepository(db)
 
     async def get_account_detail(self, account_id):
         raw_account = await self.account.get_account_by_id(account_id)

@@ -13,6 +13,14 @@ class CouponRepository:
         )
         return result.scalars().all()
 
+    async def get_coupon_by_id(self, coupon_id) -> Coupon | None:
+        result = await self.db.execute(
+            select(Coupon)
+            .where(Coupon.id == coupon_id)
+            .with_for_update()
+        )
+        return result.scalar_one_or_none()
+
     async def decrease_stock(self, coupon_id) -> Coupon | None:
         result = await self.db.execute(
             select(Coupon)
