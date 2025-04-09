@@ -7,6 +7,13 @@ class CouponService():
         self.db = db
         self.coupon = CouponRepository(db)
 
+    async def create_seeds(self):
+        result = await self.coupon.create_seeds()
+        if result:
+            await self.db.commit()
+            return True
+        return False
+
     async def get_coupons(self):
         raw_coupons = await self.coupon.get_coupons()
         coupons = list()

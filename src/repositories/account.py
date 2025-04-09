@@ -7,6 +7,13 @@ class AccountRepository:
     def __init__(self, db: AsyncSession):
         self.db = db
 
+    async def create_seeds(self):
+        account1 = Account(name="test_user_1")
+        account2 = Account(name="test_user_2")
+        self.db.add_all([account1, account2])
+        await self.db.flush()
+        return True
+
     async def get_account_by_id(self, account_id: int) -> Account | None:
         result = await self.db.execute(
             select(Account)

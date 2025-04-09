@@ -10,6 +10,13 @@ class AccountService():
         self.account = AccountRepository(db)
         self.record = CouponRecordRepository(db)
 
+    async def create_seeds(self):
+        result = await self.account.create_seeds()
+        if result:
+            await self.db.commit()
+            return True
+        return False
+
     async def get_account_detail(self, account_id):
         raw_account = await self.account.get_account_by_id(account_id)
         account = raw_account.as_dict()

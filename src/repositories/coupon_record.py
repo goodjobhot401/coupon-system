@@ -3,11 +3,33 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update
 from sqlalchemy.orm import selectinload
 from models.coupon_record import CouponRecord
+from helpers.time import format_datetime_str_to_datetime
 
 
 class CouponRecordRepository:
     def __init__(self, db: AsyncSession):
         self.db = db
+
+    async def create_seeds(self):
+        raw_data = [
+            # (coupon_id, account_id, claim_at)
+            (1, 1, "2025-04-07T23:59:00"),
+            (2, 1, "2025-04-07T23:59:00"),
+            (3, 1, "2023-04-07T23:59:00"),
+            (1, 2, "2025-04-07T23:59:00"),
+            (2, 2, "2025-04-07T23:59:00"),
+            (3, 2, "2023-04-07T23:59:00"),
+        ]
+
+        seed_data = [CouponRecord(
+            coupon_id=data[0],
+            account_id=data[1],
+            claim_at=format_datetime_str_to_datetime(data[2])
+        ) for data in raw_data]
+
+        self.db.add_all(seed_data)
+        await self.db.flush()
+        return True
 
     async def get_record_by_id(self, record_id: int) -> CouponRecord:
         result = await self.db.execute(

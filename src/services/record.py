@@ -19,6 +19,13 @@ class CouponRecordService():
             "message": ""
         }
 
+    async def create_seeds(self):
+        result = await self.record.create_seeds()
+        if result:
+            await self.db.commit()
+            return True
+        return False
+
     # debug
     async def update_cache(self, coupon_id):
         key = f"coupon:{coupon_id}"

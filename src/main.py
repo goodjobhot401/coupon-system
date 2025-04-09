@@ -21,5 +21,6 @@ async def lifespan(app: FastAPI):
     # server start
     yield
 
+
 app = FastAPI(lifespan=lifespan)
 app.include_router(router)
