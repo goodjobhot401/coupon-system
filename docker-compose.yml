@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: coupon-system-api
+    ports:
+      - "8000:8000"
+    environment:
+      MYSQL_USER: coupon-system-user
+      MYSQL_PASSWORD: coupon-system-password
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: coupon-system
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    command: >
+          sh -c "python /app/src/database/bootstrap.py && uvicorn main:app --host 0.0.0.0 --port 8000"
+    depends_on:
+      - mysql
+      - redis
+
+  mysql:
+    image: mysql:8.0
+    container_name: coupon-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql-root-password
+      MYSQL_DATABASE: coupon-system
+      MYSQL_USER: coupon-system-user
+      MYSQL_PASSWORD: coupon-system-password
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./src/database/DDL:/docker-entrypoint-initdb.d
+
+
+  redis:
+    image: redis:7
+    container_name: coupon-redis
+    ports:
+      - "6380:6379"
+
