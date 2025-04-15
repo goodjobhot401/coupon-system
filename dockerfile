@@ -11,7 +11,10 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 # copy all docs in /src into /app/src  
 COPY ./src /app/src
 
+# setting entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 ENV PYTHONPATH=/app/src
 
-# start FastAPI
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+ENTRYPOINT ["/entrypoint.sh"]

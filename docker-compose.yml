@@ -1,11 +1,11 @@
 version: "3.9"
 
 services:
-  web:
+  fastapi1:
     build: .
-    container_name: coupon-system-api
+    container_name: fastapi-1
     ports:
-      - "8000:8000"
+      - "8001:8000"
     environment:
       MYSQL_USER: coupon-system-user
       MYSQL_PASSWORD: coupon-system-password
@@ -15,11 +15,42 @@ services:
 
       REDIS_HOST: redis
       REDIS_PORT: 6379
-    command: >
-          sh -c "python /app/src/database/bootstrap.py && uvicorn main:app --host 0.0.0.0 --port 8000"
+  
+      BOOTSTRAP: "true"
     depends_on:
       - mysql
       - redis
+
+  fastapi2:
+    build: .
+    container_name: fastapi-2
+    ports:
+      - "8002:8000"
+    environment:
+      MYSQL_USER: coupon-system-user
+      MYSQL_PASSWORD: coupon-system-password
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: coupon-system
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+      BOOTSTRAP: "false"
+    depends_on:
+      - mysql
+      - redis
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-gateway
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - fastapi1
+      - fastapi2
 
   mysql:
     image: mysql:8.0
@@ -35,10 +66,8 @@ services:
     volumes:
       - ./src/database/DDL:/docker-entrypoint-initdb.d
 
-
   redis:
     image: redis:7
     container_name: coupon-redis
     ports:
       - "6380:6379"
-
